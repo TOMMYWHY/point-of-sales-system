@@ -21,15 +21,21 @@ window.Vue = require('vue');
 // files.keys().map(key => Vue.component(key.split('/').pop().split('.')[0], files(key).default))
 
 import VueRouter from 'vue-router'
+import VueAxios from 'vue-axios'
+import Vuex from 'vuex'
+import  store from './store/index'
 import ElementUI from 'element-ui';
 import 'element-ui/lib/theme-chalk/index.css';
 import router from './router/index'
 import App from './components/App';
+Vue.use(VueAxios, axios);
 Vue.use(VueRouter);
+Vue.use(Vuex);
 Vue.use(ElementUI);
 
 const app = new Vue({
     el: '#app',
     router,
+    store,
     render:h=>h(App),
 });

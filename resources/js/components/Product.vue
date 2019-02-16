@@ -34,8 +34,16 @@
 </template>
 
 <script>
+    import  {mapState, mapActions} from 'vuex'
+
     export default {
-        name: "Product"
+        name: "Product",
+        computed:{
+            lists(){
+                console.log(this.$store.state.products.lists);
+                return this.$store.state.products.lists;
+            }
+        },
     }
 </script>
 
