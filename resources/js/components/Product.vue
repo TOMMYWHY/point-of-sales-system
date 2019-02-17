@@ -4,28 +4,23 @@
             <thead class="thead-dark">
             <tr>
                 <th scope="col">#</th>
-                <th scope="col">First</th>
-                <th scope="col">Last</th>
-                <th scope="col">Handle</th>
+                <th scope="col">name</th>
+                <th scope="col">trait</th>
+                <th scope="col">price</th>
+                <th scope="col">discount</th>
+                <th scope="col">stock</th>
+                <th scope="col">actions</th>
             </tr>
             </thead>
             <tbody>
-            <tr>
-                <th scope="row">1</th>
-                <td>Mark</td>
-                <td>Otto</td>
-                <td>@mdo</td>
-            </tr>
-            <tr>
-                <th scope="row">2</th>
-                <td>Jacob</td>
-                <td>Thornton</td>
-                <td>@fat</td>
-            </tr>
-            <tr>
-                <th scope="row">3</th>
-                <td colspan="2">Larry the Bird</td>
-                <td>@twitter</td>
+            <tr v-for="item in lists">
+                <th scope="row">{{item.id}}</th>
+                <td colspan="1">{{item.name}}</td>
+                <td colspan="1">{{item.trait}}</td>
+                <td colspan="1">{{item.price}}</td>
+                <td colspan="1">{{item.discount}}</td>
+                <td colspan="1">{{item.stock}}</td>
+                <td colspan="1"><button class="btn btn-info">Booking</button></td>
             </tr>
             </tbody>
         </table>
@@ -44,6 +39,19 @@
                 return this.$store.state.products.lists;
             }
         },
+        created(){
+            this.getLists();
+        },
+        methods: {
+            getLists(){
+                this.$store.dispatch('getLists');
+                // this.getLists();//遇上面同义； 解构后可以直接使用 this 调用
+            },
+            /*...mapActions([
+                'getLists'
+            ])*/
+        }
+
     }
 </script>
 

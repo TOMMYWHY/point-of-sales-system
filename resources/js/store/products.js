@@ -18,7 +18,6 @@ export default {
     actions:{
         getLists({commit}){
             api.getProductsLists().then(res=>{
-                console.log(res.data);
                 commit('SetLists',res.data);
             })
         },

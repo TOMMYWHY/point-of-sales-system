@@ -3456,11 +3456,6 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
-//
-//
-//
-//
-//
 
 /* harmony default export */ __webpack_exports__["default"] = ({
   name: "Product",
@@ -3468,6 +3463,14 @@ __webpack_require__.r(__webpack_exports__);
     lists: function lists() {
       console.log(this.$store.state.products.lists);
       return this.$store.state.products.lists;
+    }
+  },
+  created: function created() {
+    this.getLists();
+  },
+  methods: {
+    getLists: function getLists() {
+      this.$store.dispatch('getLists'); // this.getLists();//遇上面同义； 解构后可以直接使用 this 调用
     }
   }
 });
@@ -89604,57 +89607,65 @@ var render = function() {
   var _vm = this
   var _h = _vm.$createElement
   var _c = _vm._self._c || _h
-  return _vm._m(0)
+  return _c("div", { staticClass: "table-responsive" }, [
+    _c("table", { staticClass: "table table-hover table-sm" }, [
+      _vm._m(0),
+      _vm._v(" "),
+      _c(
+        "tbody",
+        _vm._l(_vm.lists, function(item) {
+          return _c("tr", [
+            _c("th", { attrs: { scope: "row" } }, [_vm._v(_vm._s(item.id))]),
+            _vm._v(" "),
+            _c("td", { attrs: { colspan: "1" } }, [_vm._v(_vm._s(item.name))]),
+            _vm._v(" "),
+            _c("td", { attrs: { colspan: "1" } }, [_vm._v(_vm._s(item.trait))]),
+            _vm._v(" "),
+            _c("td", { attrs: { colspan: "1" } }, [_vm._v(_vm._s(item.price))]),
+            _vm._v(" "),
+            _c("td", { attrs: { colspan: "1" } }, [
+              _vm._v(_vm._s(item.discount))
+            ]),
+            _vm._v(" "),
+            _c("td", { attrs: { colspan: "1" } }, [_vm._v(_vm._s(item.stock))]),
+            _vm._v(" "),
+            _vm._m(1, true)
+          ])
+        }),
+        0
+      )
+    ])
+  ])
 }
 var staticRenderFns = [
   function() {
     var _vm = this
     var _h = _vm.$createElement
     var _c = _vm._self._c || _h
-    return _c("div", { staticClass: "table-responsive" }, [
-      _c("table", { staticClass: "table table-hover table-sm" }, [
-        _c("thead", { staticClass: "thead-dark" }, [
-          _c("tr", [
-            _c("th", { attrs: { scope: "col" } }, [_vm._v("#")]),
-            _vm._v(" "),
-            _c("th", { attrs: { scope: "col" } }, [_vm._v("First")]),
-            _vm._v(" "),
-            _c("th", { attrs: { scope: "col" } }, [_vm._v("Last")]),
-            _vm._v(" "),
-            _c("th", { attrs: { scope: "col" } }, [_vm._v("Handle")])
-          ])
-        ]),
+    return _c("thead", { staticClass: "thead-dark" }, [
+      _c("tr", [
+        _c("th", { attrs: { scope: "col" } }, [_vm._v("#")]),
         _vm._v(" "),
-        _c("tbody", [
-          _c("tr", [
-            _c("th", { attrs: { scope: "row" } }, [_vm._v("1")]),
-            _vm._v(" "),
-            _c("td", [_vm._v("Mark")]),
-            _vm._v(" "),
-            _c("td", [_vm._v("Otto")]),
-            _vm._v(" "),
-            _c("td", [_vm._v("@mdo")])
-          ]),
-          _vm._v(" "),
-          _c("tr", [
-            _c("th", { attrs: { scope: "row" } }, [_vm._v("2")]),
-            _vm._v(" "),
-            _c("td", [_vm._v("Jacob")]),
-            _vm._v(" "),
-            _c("td", [_vm._v("Thornton")]),
-            _vm._v(" "),
-            _c("td", [_vm._v("@fat")])
-          ]),
-          _vm._v(" "),
-          _c("tr", [
-            _c("th", { attrs: { scope: "row" } }, [_vm._v("3")]),
-            _vm._v(" "),
-            _c("td", { attrs: { colspan: "2" } }, [_vm._v("Larry the Bird")]),
-            _vm._v(" "),
-            _c("td", [_vm._v("@twitter")])
-          ])
-        ])
+        _c("th", { attrs: { scope: "col" } }, [_vm._v("name")]),
+        _vm._v(" "),
+        _c("th", { attrs: { scope: "col" } }, [_vm._v("trait")]),
+        _vm._v(" "),
+        _c("th", { attrs: { scope: "col" } }, [_vm._v("price")]),
+        _vm._v(" "),
+        _c("th", { attrs: { scope: "col" } }, [_vm._v("discount")]),
+        _vm._v(" "),
+        _c("th", { attrs: { scope: "col" } }, [_vm._v("stock")]),
+        _vm._v(" "),
+        _c("th", { attrs: { scope: "col" } }, [_vm._v("actions")])
       ])
+    ])
+  },
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("td", { attrs: { colspan: "1" } }, [
+      _c("button", { staticClass: "btn btn-info" }, [_vm._v("Booking")])
     ])
   }
 ]
@@ -105754,10 +105765,10 @@ __webpack_require__.r(__webpack_exports__);
 vue__WEBPACK_IMPORTED_MODULE_0___default.a.use(vue_router__WEBPACK_IMPORTED_MODULE_1__["default"]);
 var routes = [{
   path: '/',
-  redirect: '/product'
+  redirect: '/product/'
 }, {
   name: 'product',
-  path: '/product',
+  path: '/product/',
   component: _components_Product__WEBPACK_IMPORTED_MODULE_2__["default"]
 }, {
   name: 'task',
@@ -105826,7 +105837,6 @@ __webpack_require__.r(__webpack_exports__);
     getLists: function getLists(_ref) {
       var commit = _ref.commit;
       _api__WEBPACK_IMPORTED_MODULE_0__["default"].getProductsLists().then(function (res) {
-        console.log(res.data);
         commit('SetLists', res.data);
       });
     }
