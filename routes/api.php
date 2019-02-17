@@ -18,5 +18,9 @@ Route::middleware('auth:api')->get('/user', function (Request $request) {
 });
 
 Route::namespace("api\\v1")->prefix('v1')->group(function (){
-	Route::get('/price','ProductController@index');//获取全部
+
+	Route::get('/price','ProductController@index');//获取全部产品
+
+	Route::get('/task','TaskController@index');//获取全部任务
+	Route::post('/task','TaskController@store');//新建 task
 });
