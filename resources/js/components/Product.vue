@@ -1,33 +1,3 @@
-<template>
-    <div class="table-responsive">
-        <table class="table table-hover table-sm">
-            <thead class="thead-dark">
-            <tr>
-                <th scope="col">#</th>
-                <th scope="col">name</th>
-                <th scope="col">trait</th>
-                <th scope="col">price</th>
-                <th scope="col">discount</th>
-                <th scope="col">stock</th>
-                <th scope="col">actions</th>
-            </tr>
-            </thead>
-            <tbody>
-            <tr v-for="item in lists">
-                <th scope="row">{{item.id}}</th>
-                <td colspan="1">{{item.name}}</td>
-                <td colspan="1">{{item.trait}}</td>
-                <td colspan="1">{{item.price}}</td>
-                <td colspan="1">{{item.discount}}</td>
-                <td colspan="1">{{item.stock}}</td>
-                <td colspan="1"><button class="btn btn-info">Booking</button></td>
-            </tr>
-            </tbody>
-        </table>
-
-    </div>
-</template>
-
 <script>
     import  {mapState, mapActions} from 'vuex'
 
@@ -35,6 +5,7 @@
         name: "Product",
         computed:{
             lists(){
+                console.log('product1111111111111');
                 console.log(this.$store.state.products.lists);
                 return this.$store.state.products.lists;
             }
@@ -58,3 +29,40 @@
 <style scoped>
 
 </style>
+
+<template>
+    <div class="table-responsive">
+        {{this.$store.state.lists}}
+
+        <table class="table table-hover table-sm">
+            <thead class="thead-dark">
+            <tr>
+                <th scope="col">#</th>
+                <th scope="col">name</th>
+                <th scope="col">trait</th>
+                <th scope="col">price</th>
+                <th scope="col">discount</th>
+                <th scope="col">stock</th>
+                <th scope="col">actions</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr v-for="item in lists">
+                <th scope="row">{{item.id}}</th>
+                <td colspan="1">{{item.name}}</td>
+                <td colspan="1">{{item.trait}}</td>
+                <td colspan="1">{{item.price}}</td>
+                <td colspan="1">{{item.discount}}</td>
+                <td colspan="1">{{item.stock}}</td>
+
+                <td colspan="1">
+                    <router-link :to="{path:'/task/product/' + item.id}">
+                        <button class="btn btn-info">  booking</button>
+                    </router-link>
+                </td>
+            </tr>
+            </tbody>
+        </table>
+
+    </div>
+</template>

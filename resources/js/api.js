@@ -12,4 +12,9 @@ export default {
             // id : this.$route.params.id
         })
     }*/
+    getTasksLists(params){
+        return axios.get('api/v1/task',{
+            params:params
+        })
+    },
 }

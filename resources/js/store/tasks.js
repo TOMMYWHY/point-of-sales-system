@@ -17,25 +17,16 @@ export default {
     },
     actions:{
         getLists({commit}){
-            axios.get('api/v1/price').then(res=>{
+            axios.get('api/v1/task').then(res=>{
                 // console.log(res.data);
                 commit('SetLists',res.data);
             })
         },
-       /* getLists({commit}){
-            api.getProductsLists().then(res=>{
+        /*getLists({commit}){
+            api.getTasksLists().then(res=>{
                 commit('SetLists',res.data);
             })
         },*/
-      /*  getDetail({commit},id){
-            /!*axios.get('api/questions/'+id).then(res=>{
-                console.log(res.data);
-                commit('SetDetail',res.data);
-            })*!/
-            api.getQuestionsDetail(id).then(res=>{
-                console.log(res.data);
-                commit('SetDetail',res.data);
-            })
-        }*/
+
     },
 }
