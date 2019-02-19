@@ -6,20 +6,32 @@ export default {
         lists :[],
         detail:{}
     },
-    getters:{},
+    getters:{
+        GET_PRODUCT_LIST(state){
+            let productList = state.lists;
+            if(!productList){
+                productList = JSON.parse(window.localStorage.getItem('productList') || null)
+            }
+            return productList;
+        }
+    },
     mutations:{
         SetLists(state,lists){
             state.lists = lists
-        },
+        }
+        /*
         SetDetail(state,detail){
             state.detail = detail
-        }
+        }*/
     },
     actions:{
         getLists({commit}){
             axios.get('api/v1/price').then(res=>{
                 // console.log(res.data);
+                // context.commit('SET_PRODUCT_LIST',res.data);
+                window.localStorage.setItem('productList',JSON.stringify(res.data));
                 commit('SetLists',res.data);
+                // commit('aaa');
             })
         },
        /* getLists({commit}){

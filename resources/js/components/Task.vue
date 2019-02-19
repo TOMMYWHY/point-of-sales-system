@@ -41,10 +41,21 @@
             }
         },
         mounted(){
+            console.log('tasks');
+            /*
+            * task 组件 与 product 组件 共享 productList 数据。
+            * 共享方案，localstorage 或是 vuex 共享
+            * 问题：localstorage 数据变化时需要更新，（productList 数据 基本不变）
+            *       vuex 必须先去product 页面获取数据，然后才能共享到期他组件中
+            * */
+            console.log(this.$store.state.products.lists);
+            // console.log('storage',window.localStorage.productList);
+
+
             //异步
             //使用vue-axios 后 可以this.axios
             this.axios.request('api/v1/task').then(res=>{
-                console.log(res.data);
+                // console.log(res.data);
                 this.tasks = res.data; //此处data 是一个数组，内部存储的是对象；遍历是时使用 in
             });
         },

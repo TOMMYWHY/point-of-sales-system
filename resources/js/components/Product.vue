@@ -1,19 +1,30 @@
 <script>
-    import  {mapState, mapActions} from 'vuex'
-
+    import  {mapState, mapActions,mapGetters} from 'vuex'
+    import store from '../store/index'
     export default {
         name: "Product",
+        store,
         computed:{
+           /* ...mapActions([
+                'getLists'
+            ]),*/
+
             lists(){
-                console.log('product1111111111111');
-                console.log(this.$store.state.products.lists);
+                // console.log(this.$store.state.products.lists);
                 return this.$store.state.products.lists;
             }
         },
         created(){
+            console.log(111);
             this.getLists();
+
+            console.log(this.$store.state.products);
+            // console.log('storage',window.localStorage.productList)
+            // console.log(this.$store.state.products);
+
         },
         methods: {
+
             getLists(){
                 this.$store.dispatch('getLists');
                 // this.getLists();//遇上面同义； 解构后可以直接使用 this 调用

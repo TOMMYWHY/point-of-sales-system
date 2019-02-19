@@ -3426,18 +3426,26 @@ __webpack_require__.r(__webpack_exports__);
 "use strict";
 __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var vuex__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! vuex */ "./node_modules/vuex/dist/vuex.esm.js");
+/* harmony import */ var _store_index__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../store/index */ "./resources/js/store/index.js");
+
 
 /* harmony default export */ __webpack_exports__["default"] = ({
   name: "Product",
+  store: _store_index__WEBPACK_IMPORTED_MODULE_1__["default"],
   computed: {
+    /* ...mapActions([
+         'getLists'
+     ]),*/
     lists: function lists() {
-      console.log('product1111111111111');
-      console.log(this.$store.state.products.lists);
+      // console.log(this.$store.state.products.lists);
       return this.$store.state.products.lists;
     }
   },
   created: function created() {
+    console.log(111);
     this.getLists();
+    console.log(this.$store.state.products); // console.log('storage',window.localStorage.productList)
+    // console.log(this.$store.state.products);
   },
   methods: {
     getLists: function getLists() {
@@ -3499,10 +3507,20 @@ __webpack_require__.r(__webpack_exports__);
   mounted: function mounted() {
     var _this = this;
 
+    console.log('tasks');
+    /*
+    * task 组件 与 product 组件 共享 productList 数据。
+    * 共享方案，localstorage 或是 vuex 共享
+    * 问题：localstorage 数据变化时需要更新，（productList 数据 基本不变）
+    *       vuex 必须先去product 页面获取数据，然后才能共享到期他组件中
+    * */
+
+    console.log(this.$store.state.products.lists); // console.log('storage',window.localStorage.productList);
     //异步
     //使用vue-axios 后 可以this.axios
+
     this.axios.request('api/v1/task').then(function (res) {
-      console.log(res.data);
+      // console.log(res.data);
       _this.tasks = res.data; //此处data 是一个数组，内部存储的是对象；遍历是时使用 in
     });
   }
@@ -3662,12 +3680,36 @@ __webpack_require__.r(__webpack_exports__);
   name: "TaskDetail",
   data: function data() {
     return {
-      product: null
+      productId: 0,
+      product: null,
+      total: 0
     };
   },
-  created: function created() {
-    console.log(this.$route.params.id);
-    console.log(this.$store.state);
+  mounted: function mounted() {
+    this.getProductId();
+    this.getProductInfo(); // this.getTotalPrice();
+    // console.log(this.total);
+  },
+  methods: {
+    getProductId: function getProductId() {
+      this.productId = this.$route.params.id;
+    },
+    getProductInfo: function getProductInfo() {
+      console.log(this.$route.params.id); // let id = this.$route.params.id;
+
+      var id = this.productId;
+      this.product = this.$store.state.products.lists[id];
+      console.log(this.product);
+    },
+
+    /*
+    * todo
+    * getTotalPrice
+    * */
+    getTotalPrice: function getTotalPrice() {
+      var id = this.productId; // console.log(this.$store.state.products.lists[id]);
+      // this.total = this.$store.state.products.lists[this.productId];
+    }
   }
 });
 
@@ -89968,30 +90010,94 @@ var render = function() {
   var _c = _vm._self._c || _h
   return _c("div", { staticClass: "container" }, [
     _c("div", { staticClass: "row" }, [
-      _c("div", { staticClass: "col-md-4 order-md-2 mb-4" }, [
-        _c(
-          "h4",
-          {
-            staticClass:
-              "d-flex justify-content-between align-items-center mb-3"
-          },
-          [
-            _c("span", { staticClass: "text-muted" }, [
-              _vm._v("product name todo")
+      _vm.product
+        ? _c("div", { staticClass: "col-md-4 order-md-2 mb-4" }, [
+            _c(
+              "h4",
+              {
+                staticClass:
+                  "d-flex justify-content-between align-items-center mb-3"
+              },
+              [
+                _c("span", { staticClass: "text-muted" }, [
+                  _vm._v(_vm._s(_vm.product.name))
+                ]),
+                _vm._v(" "),
+                _c(
+                  "span",
+                  { staticClass: "badge badge-secondary badge-pill" },
+                  [_vm._v(" " + _vm._s(this.$route.params.id))]
+                )
+              ]
+            ),
+            _vm._v(" "),
+            _c("ul", { staticClass: "list-group mb-3" }, [
+              _c(
+                "li",
+                {
+                  staticClass:
+                    "list-group-item d-flex justify-content-between lh-condensed"
+                },
+                [
+                  _vm._m(0),
+                  _vm._v(" "),
+                  _c("span", { staticClass: "text-muted" }, [
+                    _vm._v(_vm._s(_vm.product.trait))
+                  ])
+                ]
+              ),
+              _vm._v(" "),
+              _c(
+                "li",
+                {
+                  staticClass:
+                    "list-group-item d-flex justify-content-between lh-condensed"
+                },
+                [
+                  _vm._m(1),
+                  _vm._v(" "),
+                  _c("span", { staticClass: "text-muted" }, [
+                    _vm._v("$" + _vm._s(_vm.product.price))
+                  ])
+                ]
+              ),
+              _vm._v(" "),
+              _c(
+                "li",
+                {
+                  staticClass:
+                    "list-group-item d-flex justify-content-between lh-condensed"
+                },
+                [
+                  _vm._m(2),
+                  _vm._v(" "),
+                  _c("span", { staticClass: "text-muted" }, [
+                    _vm._v(_vm._s(_vm.product.desc))
+                  ])
+                ]
+              ),
+              _vm._v(" "),
+              _c(
+                "li",
+                {
+                  staticClass:
+                    "list-group-item d-flex justify-content-between bg-light"
+                },
+                [
+                  _vm._m(3),
+                  _vm._v(" "),
+                  _c("strong", { staticClass: "text-success" }, [
+                    _vm._v("$" + _vm._s(_vm.product.price))
+                  ])
+                ]
+              )
             ]),
             _vm._v(" "),
-            _c("span", { staticClass: "badge badge-secondary badge-pill" }, [
-              _vm._v(" " + _vm._s(this.$route.params.id))
-            ])
-          ]
-        ),
-        _vm._v(" "),
-        _vm._m(0),
-        _vm._v(" "),
-        _vm._m(1)
-      ]),
+            _vm._m(4)
+          ])
+        : _vm._e(),
       _vm._v(" "),
-      _vm._m(2)
+      _vm._m(5)
     ])
   ])
 }
@@ -90000,65 +90106,32 @@ var staticRenderFns = [
     var _vm = this
     var _h = _vm.$createElement
     var _c = _vm._self._c || _h
-    return _c("ul", { staticClass: "list-group mb-3" }, [
-      _c(
-        "li",
-        {
-          staticClass:
-            "list-group-item d-flex justify-content-between lh-condensed"
-        },
-        [
-          _c("div", [
-            _c("h6", { staticClass: "my-0" }, [_vm._v("Product trait")])
-          ]),
-          _vm._v(" "),
-          _c("span", { staticClass: "text-muted" }, [_vm._v("white")])
-        ]
-      ),
-      _vm._v(" "),
-      _c(
-        "li",
-        {
-          staticClass:
-            "list-group-item d-flex justify-content-between lh-condensed"
-        },
-        [
-          _c("div", [
-            _c("h6", { staticClass: "my-0" }, [_vm._v("product price")])
-          ]),
-          _vm._v(" "),
-          _c("span", { staticClass: "text-muted" }, [_vm._v("$8")])
-        ]
-      ),
-      _vm._v(" "),
-      _c(
-        "li",
-        {
-          staticClass:
-            "list-group-item d-flex justify-content-between lh-condensed"
-        },
-        [
-          _c("div", [
-            _c("h6", { staticClass: "my-0" }, [_vm._v("product description")])
-          ]),
-          _vm._v(" "),
-          _c("span", { staticClass: "text-muted" }, [_vm._v("details")])
-        ]
-      ),
-      _vm._v(" "),
-      _c(
-        "li",
-        {
-          staticClass: "list-group-item d-flex justify-content-between bg-light"
-        },
-        [
-          _c("div", { staticClass: "text-success" }, [
-            _c("span", [_vm._v("Total (USD)")])
-          ]),
-          _vm._v(" "),
-          _c("strong", { staticClass: "text-success" }, [_vm._v("$20")])
-        ]
-      )
+    return _c("div", [
+      _c("h6", { staticClass: "my-0" }, [_vm._v("Product trait")])
+    ])
+  },
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("div", [
+      _c("h6", { staticClass: "my-0" }, [_vm._v("product price")])
+    ])
+  },
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("div", [
+      _c("h6", { staticClass: "my-0" }, [_vm._v("product description")])
+    ])
+  },
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("div", { staticClass: "text-success" }, [
+      _c("span", [_vm._v("Total (USD)")])
     ])
   },
   function() {
@@ -106539,21 +106612,35 @@ __webpack_require__.r(__webpack_exports__);
     lists: [],
     detail: {}
   },
-  getters: {},
+  getters: {
+    GET_PRODUCT_LIST: function GET_PRODUCT_LIST(state) {
+      var productList = state.lists;
+
+      if (!productList) {
+        productList = JSON.parse(window.localStorage.getItem('productList') || null);
+      }
+
+      return productList;
+    }
+  },
   mutations: {
     SetLists: function SetLists(state, lists) {
       state.lists = lists;
-    },
-    SetDetail: function SetDetail(state, detail) {
-      state.detail = detail;
     }
+    /*
+    SetDetail(state,detail){
+        state.detail = detail
+    }*/
+
   },
   actions: {
     getLists: function getLists(_ref) {
       var commit = _ref.commit;
       axios.get('api/v1/price').then(function (res) {
         // console.log(res.data);
-        commit('SetLists', res.data);
+        // context.commit('SET_PRODUCT_LIST',res.data);
+        window.localStorage.setItem('productList', JSON.stringify(res.data));
+        commit('SetLists', res.data); // commit('aaa');
       });
     }
   }

@@ -1,9 +1,9 @@
 <template>
     <div class="container">
         <div class="row">
-            <div class="col-md-4 order-md-2 mb-4">
+            <div class="col-md-4 order-md-2 mb-4"  v-if="product">
                 <h4 class="d-flex justify-content-between align-items-center mb-3">
-                    <span class="text-muted">product name todo</span>
+                    <span class="text-muted">{{product.name}}</span>
                     <span class="badge badge-secondary badge-pill"> {{this.$route.params.id }}</span>
                 </h4>
                 <ul class="list-group mb-3">
@@ -12,28 +12,28 @@
                             <h6 class="my-0">Product trait</h6>
                             <!--<small class="text-muted">white</small>-->
                         </div>
-                        <span class="text-muted">white</span>
+                        <span class="text-muted">{{product.trait}}</span>
                     </li>
                     <li class="list-group-item d-flex justify-content-between lh-condensed">
                         <div>
                             <h6 class="my-0">product price</h6>
                             <!--<small class="text-muted">Brief description</small>-->
                         </div>
-                        <span class="text-muted">$8</span>
+                        <span class="text-muted">${{product.price}}</span>
                     </li>
                     <li class="list-group-item d-flex justify-content-between lh-condensed">
                         <div>
                             <h6 class="my-0">product description</h6>
                             <!--<small class="text-muted">Brief description</small>-->
                         </div>
-                        <span class="text-muted">details</span>
+                        <span class="text-muted">{{product.desc}}</span>
                     </li>
                     <li class="list-group-item d-flex justify-content-between bg-light">
                         <div class="text-success">
                             <span>Total (USD)</span>
 
                         </div>
-                        <strong class="text-success">$20</strong>
+                        <strong class="text-success">${{product.price}}</strong>
 
                     </li>
 
@@ -142,14 +142,40 @@
         name: "TaskDetail",
         data(){
             return {
-                product:null
+                productId:0,
+                product:null,
+                total:0
             }
         },
 
-        created(){
-            console.log(this.$route.params.id);
-            console.log(this.$store.state);
-        }
+        mounted(){
+            this.getProductId();
+            this.getProductInfo();
+            // this.getTotalPrice();
+            // console.log(this.total);
+        },
+         methods:{
+            getProductId(){
+               this.productId = this.$route.params.id;
+
+            },
+            getProductInfo(){
+                console.log(this.$route.params.id);
+                // let id = this.$route.params.id;
+                let id = this.productId;
+                this.product = this.$store.state.products.lists[id];
+                console.log(this.product);
+            },
+             /*
+             * todo
+             * getTotalPrice
+             * */
+             getTotalPrice(){
+                 let id = this.productId;
+                 // console.log(this.$store.state.products.lists[id]);
+                // this.total = this.$store.state.products.lists[this.productId];
+             },
+         }
     }
 </script>
 
