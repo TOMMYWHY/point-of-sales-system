@@ -3513,6 +3513,8 @@ __webpack_require__.r(__webpack_exports__);
     * 共享方案，localstorage 或是 vuex 共享
     * 问题：localstorage 数据变化时需要更新，（productList 数据 基本不变）
     *       vuex 必须先去product 页面获取数据，然后才能共享到期他组件中
+    *
+    * 解决方案1：将product list 数据放入根组件或公共组件，首页加载时获取productlist。
     * */
 
     console.log(this.$store.state.products.lists); // console.log('storage',window.localStorage.productList);
@@ -3673,16 +3675,15 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
-//
-//
-//
 /* harmony default export */ __webpack_exports__["default"] = ({
   name: "TaskDetail",
   data: function data() {
     return {
       productId: 0,
       product: null,
-      total: 0
+      total: 0,
+      taskData: {// status:0
+      }
     };
   },
   mounted: function mounted() {
@@ -3691,6 +3692,22 @@ __webpack_require__.r(__webpack_exports__);
     // console.log(this.total);
   },
   methods: {
+    submitData: function submitData() {
+      console.log('submited');
+      var url = 'api/v1/task'; // let data = JSON.stringify(this.taskData);
+
+      this.taskData.product_id = this.productId; // console.log(data);
+
+      axios.post(url, this.taskData, {
+        headers: {// 'Content-Type': 'application/x-www-form-urlencoded'
+        }
+      }).then(function (res) {
+        console.log('success');
+        console.log(res.data);
+      }).catch(function (err) {
+        console.log(err);
+      });
+    },
     getProductId: function getProductId() {
       this.productId = this.$route.params.id;
     },
@@ -3698,7 +3715,7 @@ __webpack_require__.r(__webpack_exports__);
       console.log(this.$route.params.id); // let id = this.$route.params.id;
 
       var id = this.productId;
-      this.product = this.$store.state.products.lists[id];
+      this.product = this.$store.state.products.lists[id - 1];
       console.log(this.product);
     },
 
@@ -90097,7 +90114,409 @@ var render = function() {
           ])
         : _vm._e(),
       _vm._v(" "),
-      _vm._m(5)
+      _c("div", { staticClass: "col-md-8 order-md-1" }, [
+        _c("h4", { staticClass: "mb-3" }, [_vm._v("Customer Info")]),
+        _vm._v(" "),
+        _c(
+          "form",
+          {
+            staticClass: "needs-validation",
+            attrs: { novalidate: "", method: "post" },
+            on: {
+              submit: function($event) {
+                $event.preventDefault()
+                return _vm.submitData($event)
+              }
+            }
+          },
+          [
+            _c("div", { staticClass: "row" }, [
+              _c("div", { staticClass: "col-md-6 mb-3" }, [
+                _c("label", { attrs: { for: "name" } }, [_vm._v("Full name")]),
+                _vm._v(" "),
+                _c("input", {
+                  directives: [
+                    {
+                      name: "model",
+                      rawName: "v-model",
+                      value: _vm.taskData.name,
+                      expression: "taskData.name"
+                    }
+                  ],
+                  staticClass: "form-control",
+                  attrs: {
+                    type: "text",
+                    id: "name",
+                    placeholder: "",
+                    value: "",
+                    required: ""
+                  },
+                  domProps: { value: _vm.taskData.name },
+                  on: {
+                    input: function($event) {
+                      if ($event.target.composing) {
+                        return
+                      }
+                      _vm.$set(_vm.taskData, "name", $event.target.value)
+                    }
+                  }
+                }),
+                _vm._v(" "),
+                _c("div", { staticClass: "invalid-feedback" }, [
+                  _vm._v(
+                    "\n                            Valid full name is required.\n                        "
+                  )
+                ])
+              ]),
+              _vm._v(" "),
+              _c("div", { staticClass: "col-md-6 mb-3" }, [
+                _c("label", { attrs: { for: "phone" } }, [
+                  _vm._v("Contact number")
+                ]),
+                _vm._v(" "),
+                _c("input", {
+                  directives: [
+                    {
+                      name: "model",
+                      rawName: "v-model",
+                      value: _vm.taskData.phone,
+                      expression: "taskData.phone"
+                    }
+                  ],
+                  staticClass: "form-control",
+                  attrs: {
+                    type: "text",
+                    id: "phone",
+                    placeholder: "",
+                    value: "",
+                    required: ""
+                  },
+                  domProps: { value: _vm.taskData.phone },
+                  on: {
+                    input: function($event) {
+                      if ($event.target.composing) {
+                        return
+                      }
+                      _vm.$set(_vm.taskData, "phone", $event.target.value)
+                    }
+                  }
+                }),
+                _vm._v(" "),
+                _c("div", { staticClass: "invalid-feedback" }, [
+                  _vm._v(
+                    "\n                            Valid phone is required.\n                        "
+                  )
+                ])
+              ])
+            ]),
+            _vm._v(" "),
+            _c("div", { staticClass: "mb-3" }, [
+              _vm._m(5),
+              _vm._v(" "),
+              _c("input", {
+                directives: [
+                  {
+                    name: "model",
+                    rawName: "v-model",
+                    value: _vm.taskData.email,
+                    expression: "taskData.email"
+                  }
+                ],
+                staticClass: "form-control",
+                attrs: {
+                  type: "email",
+                  id: "email",
+                  placeholder: "you@example.com"
+                },
+                domProps: { value: _vm.taskData.email },
+                on: {
+                  input: function($event) {
+                    if ($event.target.composing) {
+                      return
+                    }
+                    _vm.$set(_vm.taskData, "email", $event.target.value)
+                  }
+                }
+              }),
+              _vm._v(" "),
+              _c("div", { staticClass: "invalid-feedback" }, [
+                _vm._v(
+                  "\n                        Please enter a valid email address.\n                    "
+                )
+              ])
+            ]),
+            _vm._v(" "),
+            _c("div", { staticClass: "mb-3" }, [
+              _c("label", { attrs: { for: "address" } }, [_vm._v("Address")]),
+              _vm._v(" "),
+              _c("input", {
+                directives: [
+                  {
+                    name: "model",
+                    rawName: "v-model",
+                    value: _vm.taskData.address,
+                    expression: "taskData.address"
+                  }
+                ],
+                staticClass: "form-control",
+                attrs: {
+                  type: "text",
+                  id: "address",
+                  placeholder: "1234 Main St",
+                  required: ""
+                },
+                domProps: { value: _vm.taskData.address },
+                on: {
+                  input: function($event) {
+                    if ($event.target.composing) {
+                      return
+                    }
+                    _vm.$set(_vm.taskData, "address", $event.target.value)
+                  }
+                }
+              }),
+              _vm._v(" "),
+              _c("div", { staticClass: "invalid-feedback" }, [
+                _vm._v(
+                  "\n                        Please enter your deliver address.\n                    "
+                )
+              ])
+            ]),
+            _vm._v(" "),
+            _c("div", { staticClass: "mb-3" }, [
+              _c("label", { attrs: { for: "issue" } }, [_vm._v("Issue")]),
+              _vm._v(" "),
+              _c("input", {
+                directives: [
+                  {
+                    name: "model",
+                    rawName: "v-model",
+                    value: _vm.taskData.issue,
+                    expression: "taskData.issue"
+                  }
+                ],
+                staticClass: "form-control",
+                attrs: {
+                  type: "text",
+                  id: "issue",
+                  placeholder: "",
+                  required: ""
+                },
+                domProps: { value: _vm.taskData.issue },
+                on: {
+                  input: function($event) {
+                    if ($event.target.composing) {
+                      return
+                    }
+                    _vm.$set(_vm.taskData, "issue", $event.target.value)
+                  }
+                }
+              }),
+              _vm._v(" "),
+              _c("div", { staticClass: "invalid-feedback" }, [
+                _vm._v(
+                  "\n                        Please enter your issue.\n                    "
+                )
+              ])
+            ]),
+            _vm._v(" "),
+            _c("div", { staticClass: "mb-3" }, [
+              _c("label", { attrs: { for: "desc" } }, [_vm._v("description")]),
+              _vm._v(" "),
+              _c("textarea", {
+                directives: [
+                  {
+                    name: "model",
+                    rawName: "v-model",
+                    value: _vm.taskData.desc,
+                    expression: "taskData.desc"
+                  }
+                ],
+                staticClass: "form-control",
+                attrs: { type: "text", id: "desc", placeholder: "" },
+                domProps: { value: _vm.taskData.desc },
+                on: {
+                  input: function($event) {
+                    if ($event.target.composing) {
+                      return
+                    }
+                    _vm.$set(_vm.taskData, "desc", $event.target.value)
+                  }
+                }
+              }),
+              _vm._v(" "),
+              _c("div", { staticClass: "invalid-feedback" }, [
+                _vm._v(
+                  "\n                        Please enter your issue.\n                    "
+                )
+              ])
+            ]),
+            _vm._v(" "),
+            _c("div", { staticClass: "mb-3" }, [
+              _c("label", { attrs: { for: "pin_code" } }, [_vm._v("pin code")]),
+              _vm._v(" "),
+              _c("input", {
+                directives: [
+                  {
+                    name: "model",
+                    rawName: "v-model",
+                    value: _vm.taskData.pin_code,
+                    expression: "taskData.pin_code"
+                  }
+                ],
+                staticClass: "form-control",
+                attrs: {
+                  type: "text",
+                  id: "pin_code",
+                  placeholder: "",
+                  required: ""
+                },
+                domProps: { value: _vm.taskData.pin_code },
+                on: {
+                  input: function($event) {
+                    if ($event.target.composing) {
+                      return
+                    }
+                    _vm.$set(_vm.taskData, "pin_code", $event.target.value)
+                  }
+                }
+              }),
+              _vm._v(" "),
+              _c("div", { staticClass: "invalid-feedback" }, [
+                _vm._v(
+                  "\n                        Please enter your pin_code.\n                    "
+                )
+              ])
+            ]),
+            _vm._v(" "),
+            _c("hr", { staticClass: "mb-4" }),
+            _vm._v(" "),
+            _c("h4", { staticClass: "mb-3" }, [_vm._v("status")]),
+            _vm._v(" "),
+            _c("div", { staticClass: "d-block my-3" }, [
+              _c("div", { staticClass: "custom-control custom-radio" }, [
+                _c("input", {
+                  directives: [
+                    {
+                      name: "model",
+                      rawName: "v-model",
+                      value: _vm.taskData.status,
+                      expression: "taskData.status"
+                    }
+                  ],
+                  staticClass: "custom-control-input",
+                  attrs: {
+                    id: "processing",
+                    name: "status",
+                    type: "radio",
+                    checked: "checked",
+                    required: "",
+                    value: "1"
+                  },
+                  domProps: { checked: _vm._q(_vm.taskData.status, "1") },
+                  on: {
+                    change: function($event) {
+                      return _vm.$set(_vm.taskData, "status", "1")
+                    }
+                  }
+                }),
+                _vm._v(" "),
+                _c(
+                  "label",
+                  {
+                    staticClass: "custom-control-label",
+                    attrs: { for: "processing" }
+                  },
+                  [_vm._v("processing")]
+                )
+              ]),
+              _vm._v(" "),
+              _c("div", { staticClass: "custom-control custom-radio" }, [
+                _c("input", {
+                  directives: [
+                    {
+                      name: "model",
+                      rawName: "v-model",
+                      value: _vm.taskData.status,
+                      expression: "taskData.status"
+                    }
+                  ],
+                  staticClass: "custom-control-input",
+                  attrs: {
+                    id: "waiting_parts",
+                    name: "status",
+                    type: "radio",
+                    required: "",
+                    value: "2"
+                  },
+                  domProps: { checked: _vm._q(_vm.taskData.status, "2") },
+                  on: {
+                    change: function($event) {
+                      return _vm.$set(_vm.taskData, "status", "2")
+                    }
+                  }
+                }),
+                _vm._v(" "),
+                _c(
+                  "label",
+                  {
+                    staticClass: "custom-control-label",
+                    attrs: { for: "waiting_parts" }
+                  },
+                  [_vm._v("waiting parts")]
+                )
+              ]),
+              _vm._v(" "),
+              _c("div", { staticClass: "custom-control custom-radio" }, [
+                _c("input", {
+                  directives: [
+                    {
+                      name: "model",
+                      rawName: "v-model",
+                      value: _vm.taskData.status,
+                      expression: "taskData.status"
+                    }
+                  ],
+                  staticClass: "custom-control-input",
+                  attrs: {
+                    id: "done",
+                    name: "status",
+                    type: "radio",
+                    required: "",
+                    value: "3"
+                  },
+                  domProps: { checked: _vm._q(_vm.taskData.status, "3") },
+                  on: {
+                    change: function($event) {
+                      return _vm.$set(_vm.taskData, "status", "3")
+                    }
+                  }
+                }),
+                _vm._v(" "),
+                _c(
+                  "label",
+                  {
+                    staticClass: "custom-control-label",
+                    attrs: { for: "done" }
+                  },
+                  [_vm._v("done")]
+                )
+              ])
+            ]),
+            _vm._v(" "),
+            _c("hr", { staticClass: "mb-4" }),
+            _vm._v(" "),
+            _c(
+              "button",
+              {
+                staticClass: "btn btn-primary btn-lg btn-block",
+                attrs: { type: "submit" }
+              },
+              [_vm._v("submit")]
+            )
+          ]
+        )
+      ])
     ])
   ])
 }
@@ -90159,235 +90578,9 @@ var staticRenderFns = [
     var _vm = this
     var _h = _vm.$createElement
     var _c = _vm._self._c || _h
-    return _c("div", { staticClass: "col-md-8 order-md-1" }, [
-      _c("h4", { staticClass: "mb-3" }, [_vm._v("Customer Info")]),
-      _vm._v(" "),
-      _c(
-        "form",
-        { staticClass: "needs-validation", attrs: { novalidate: "" } },
-        [
-          _c("div", { staticClass: "row" }, [
-            _c("div", { staticClass: "col-md-6 mb-3" }, [
-              _c("label", { attrs: { for: "name" } }, [_vm._v("Full name")]),
-              _vm._v(" "),
-              _c("input", {
-                staticClass: "form-control",
-                attrs: {
-                  type: "text",
-                  id: "name",
-                  placeholder: "",
-                  value: "",
-                  required: ""
-                }
-              }),
-              _vm._v(" "),
-              _c("div", { staticClass: "invalid-feedback" }, [
-                _vm._v(
-                  "\n                            Valid full name is required.\n                        "
-                )
-              ])
-            ]),
-            _vm._v(" "),
-            _c("div", { staticClass: "col-md-6 mb-3" }, [
-              _c("label", { attrs: { for: "phone" } }, [
-                _vm._v("Contact number")
-              ]),
-              _vm._v(" "),
-              _c("input", {
-                staticClass: "form-control",
-                attrs: {
-                  type: "text",
-                  id: "phone",
-                  placeholder: "",
-                  value: "",
-                  required: ""
-                }
-              }),
-              _vm._v(" "),
-              _c("div", { staticClass: "invalid-feedback" }, [
-                _vm._v(
-                  "\n                            Valid phone is required.\n                        "
-                )
-              ])
-            ])
-          ]),
-          _vm._v(" "),
-          _c("div", { staticClass: "mb-3" }, [
-            _c("label", { attrs: { for: "email" } }, [
-              _vm._v("Email "),
-              _c("span", { staticClass: "text-muted" }, [_vm._v("(Optional)")])
-            ]),
-            _vm._v(" "),
-            _c("input", {
-              staticClass: "form-control",
-              attrs: {
-                type: "email",
-                id: "email",
-                placeholder: "you@example.com"
-              }
-            }),
-            _vm._v(" "),
-            _c("div", { staticClass: "invalid-feedback" }, [
-              _vm._v(
-                "\n                        Please enter a valid email address.\n                    "
-              )
-            ])
-          ]),
-          _vm._v(" "),
-          _c("div", { staticClass: "mb-3" }, [
-            _c("label", { attrs: { for: "address" } }, [_vm._v("Address")]),
-            _vm._v(" "),
-            _c("input", {
-              staticClass: "form-control",
-              attrs: {
-                type: "text",
-                id: "address",
-                placeholder: "1234 Main St",
-                required: ""
-              }
-            }),
-            _vm._v(" "),
-            _c("div", { staticClass: "invalid-feedback" }, [
-              _vm._v(
-                "\n                        Please enter your deliver address.\n                    "
-              )
-            ])
-          ]),
-          _vm._v(" "),
-          _c("div", { staticClass: "mb-3" }, [
-            _c("label", { attrs: { for: "issue" } }, [_vm._v("Issue")]),
-            _vm._v(" "),
-            _c("input", {
-              staticClass: "form-control",
-              attrs: {
-                type: "text",
-                id: "issue",
-                placeholder: "",
-                required: ""
-              }
-            }),
-            _vm._v(" "),
-            _c("div", { staticClass: "invalid-feedback" }, [
-              _vm._v(
-                "\n                        Please enter your issue.\n                    "
-              )
-            ])
-          ]),
-          _vm._v(" "),
-          _c("div", { staticClass: "mb-3" }, [
-            _c("label", { attrs: { for: "desc" } }, [_vm._v("description")]),
-            _vm._v(" "),
-            _c("textarea", {
-              staticClass: "form-control",
-              attrs: { type: "text", id: "desc", placeholder: "" }
-            }),
-            _vm._v(" "),
-            _c("div", { staticClass: "invalid-feedback" }, [
-              _vm._v(
-                "\n                        Please enter your issue.\n                    "
-              )
-            ])
-          ]),
-          _vm._v(" "),
-          _c("div", { staticClass: "mb-3" }, [
-            _c("label", { attrs: { for: "pin_code" } }, [_vm._v("pin code")]),
-            _vm._v(" "),
-            _c("input", {
-              staticClass: "form-control",
-              attrs: {
-                type: "text",
-                id: "pin_code",
-                placeholder: "",
-                required: ""
-              }
-            }),
-            _vm._v(" "),
-            _c("div", { staticClass: "invalid-feedback" }, [
-              _vm._v(
-                "\n                        Please enter your pin_code.\n                    "
-              )
-            ])
-          ]),
-          _vm._v(" "),
-          _c("hr", { staticClass: "mb-4" }),
-          _vm._v(" "),
-          _c("h4", { staticClass: "mb-3" }, [_vm._v("status")]),
-          _vm._v(" "),
-          _c("div", { staticClass: "d-block my-3" }, [
-            _c("div", { staticClass: "custom-control custom-radio" }, [
-              _c("input", {
-                staticClass: "custom-control-input",
-                attrs: {
-                  id: "processing",
-                  name: "status",
-                  type: "radio",
-                  checked: "",
-                  required: ""
-                }
-              }),
-              _vm._v(" "),
-              _c(
-                "label",
-                {
-                  staticClass: "custom-control-label",
-                  attrs: { for: "processing" }
-                },
-                [_vm._v("processing")]
-              )
-            ]),
-            _vm._v(" "),
-            _c("div", { staticClass: "custom-control custom-radio" }, [
-              _c("input", {
-                staticClass: "custom-control-input",
-                attrs: {
-                  id: "waiting_parts",
-                  name: "status",
-                  type: "radio",
-                  required: ""
-                }
-              }),
-              _vm._v(" "),
-              _c(
-                "label",
-                {
-                  staticClass: "custom-control-label",
-                  attrs: { for: "waiting_parts" }
-                },
-                [_vm._v("waiting parts")]
-              )
-            ]),
-            _vm._v(" "),
-            _c("div", { staticClass: "custom-control custom-radio" }, [
-              _c("input", {
-                staticClass: "custom-control-input",
-                attrs: {
-                  id: "done",
-                  name: "status",
-                  type: "radio",
-                  required: ""
-                }
-              }),
-              _vm._v(" "),
-              _c(
-                "label",
-                { staticClass: "custom-control-label", attrs: { for: "done" } },
-                [_vm._v("done")]
-              )
-            ])
-          ]),
-          _vm._v(" "),
-          _c("hr", { staticClass: "mb-4" }),
-          _vm._v(" "),
-          _c(
-            "button",
-            {
-              staticClass: "btn btn-primary btn-lg btn-block",
-              attrs: { type: "submit" }
-            },
-            [_vm._v("submit")]
-          )
-        ]
-      )
+    return _c("label", { attrs: { for: "email" } }, [
+      _vm._v("Email "),
+      _c("span", { staticClass: "text-muted" }, [_vm._v("(Optional)")])
     ])
   }
 ]

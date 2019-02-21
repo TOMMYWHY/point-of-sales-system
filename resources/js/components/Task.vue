@@ -47,6 +47,8 @@
             * 共享方案，localstorage 或是 vuex 共享
             * 问题：localstorage 数据变化时需要更新，（productList 数据 基本不变）
             *       vuex 必须先去product 页面获取数据，然后才能共享到期他组件中
+            *
+            * 解决方案1：将product list 数据放入根组件或公共组件，首页加载时获取productlist。
             * */
             console.log(this.$store.state.products.lists);
             // console.log('storage',window.localStorage.productList);
