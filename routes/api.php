@@ -23,4 +23,6 @@ Route::namespace("api\\v1")->prefix('v1')->group(function (){
 
 	Route::get('/task','TaskController@index');//获取全部任务
 	Route::post('/task','TaskController@store');//新建 task
+
+	Route::get('/customer/query','CustomerController@query');// 客户 电话 查询
 });

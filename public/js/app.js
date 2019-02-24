@@ -3675,6 +3675,17 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 /* harmony default export */ __webpack_exports__["default"] = ({
   name: "TaskDetail",
   data: function data() {
@@ -3682,9 +3693,16 @@ __webpack_require__.r(__webpack_exports__);
       productId: 0,
       product: null,
       total: 0,
+      phone: null,
+      checkPhoneRes: [],
       taskData: {// status:0
       }
     };
+  },
+  watch: {
+    phone: function phone(val) {
+      this.getPhoneResult();
+    }
   },
   mounted: function mounted() {
     this.getProductId();
@@ -3692,6 +3710,21 @@ __webpack_require__.r(__webpack_exports__);
     // console.log(this.total);
   },
   methods: {
+    getPhoneResult: function getPhoneResult() {
+      var _this = this;
+
+      var url = 'api/v1/customer/query?phone=' + this.phone;
+      axios.get(url).then(function (res) {
+        if (res.data.status != 0) {
+          console.log(res.data);
+          _this.taskData = res.data;
+        } else {
+          console.log(res.data.msg);
+        }
+      }).catch(function (err) {
+        console.log(err);
+      });
+    },
     submitData: function submitData() {
       console.log('submited');
       var url = 'api/v1/task'; // let data = JSON.stringify(this.taskData);
@@ -3702,8 +3735,11 @@ __webpack_require__.r(__webpack_exports__);
         headers: {// 'Content-Type': 'application/x-www-form-urlencoded'
         }
       }).then(function (res) {
-        console.log('success');
-        console.log(res.data);
+        // console.log(res.data);
+        if (res.data.status = 0) {//todo
+          //提示 创建成功
+          // alert( res. data.msg);
+        }
       }).catch(function (err) {
         console.log(err);
       });
@@ -3712,11 +3748,10 @@ __webpack_require__.r(__webpack_exports__);
       this.productId = this.$route.params.id;
     },
     getProductInfo: function getProductInfo() {
-      console.log(this.$route.params.id); // let id = this.$route.params.id;
-
+      // console.log(this.$route.params.id);
+      // let id = this.$route.params.id;
       var id = this.productId;
-      this.product = this.$store.state.products.lists[id - 1];
-      console.log(this.product);
+      this.product = this.$store.state.products.lists[id - 1]; // console.log(this.product);
     },
 
     /*
@@ -90027,92 +90062,128 @@ var render = function() {
   var _c = _vm._self._c || _h
   return _c("div", { staticClass: "container" }, [
     _c("div", { staticClass: "row" }, [
-      _vm.product
-        ? _c("div", { staticClass: "col-md-4 order-md-2 mb-4" }, [
-            _c(
-              "h4",
-              {
-                staticClass:
-                  "d-flex justify-content-between align-items-center mb-3"
-              },
-              [
-                _c("span", { staticClass: "text-muted" }, [
-                  _vm._v(_vm._s(_vm.product.name))
-                ]),
+      _c("div", { staticClass: "col-md-4 order-md-2 mb-4" }, [
+        _vm.product
+          ? _c("div", [
+              _c(
+                "h4",
+                {
+                  staticClass:
+                    "d-flex justify-content-between align-items-center mb-3"
+                },
+                [
+                  _c("span", { staticClass: "text-muted" }, [
+                    _vm._v(_vm._s(_vm.product.name))
+                  ]),
+                  _vm._v(" "),
+                  _c(
+                    "span",
+                    { staticClass: "badge badge-secondary badge-pill" },
+                    [_vm._v(" " + _vm._s(this.$route.params.id))]
+                  )
+                ]
+              ),
+              _vm._v(" "),
+              _c("ul", { staticClass: "list-group mb-3" }, [
+                _c(
+                  "li",
+                  {
+                    staticClass:
+                      "list-group-item d-flex justify-content-between lh-condensed"
+                  },
+                  [
+                    _vm._m(0),
+                    _vm._v(" "),
+                    _c("span", { staticClass: "text-muted" }, [
+                      _vm._v(_vm._s(_vm.product.trait))
+                    ])
+                  ]
+                ),
                 _vm._v(" "),
                 _c(
-                  "span",
-                  { staticClass: "badge badge-secondary badge-pill" },
-                  [_vm._v(" " + _vm._s(this.$route.params.id))]
+                  "li",
+                  {
+                    staticClass:
+                      "list-group-item d-flex justify-content-between lh-condensed"
+                  },
+                  [
+                    _vm._m(1),
+                    _vm._v(" "),
+                    _c("span", { staticClass: "text-muted" }, [
+                      _vm._v("$" + _vm._s(_vm.product.price))
+                    ])
+                  ]
+                ),
+                _vm._v(" "),
+                _c(
+                  "li",
+                  {
+                    staticClass:
+                      "list-group-item d-flex justify-content-between lh-condensed"
+                  },
+                  [
+                    _vm._m(2),
+                    _vm._v(" "),
+                    _c("span", { staticClass: "text-muted" }, [
+                      _vm._v(_vm._s(_vm.product.desc))
+                    ])
+                  ]
+                ),
+                _vm._v(" "),
+                _c(
+                  "li",
+                  {
+                    staticClass:
+                      "list-group-item d-flex justify-content-between bg-light"
+                  },
+                  [
+                    _vm._m(3),
+                    _vm._v(" "),
+                    _c("strong", { staticClass: "text-success" }, [
+                      _vm._v("$" + _vm._s(_vm.product.price))
+                    ])
+                  ]
                 )
-              ]
-            ),
-            _vm._v(" "),
-            _c("ul", { staticClass: "list-group mb-3" }, [
-              _c(
-                "li",
-                {
-                  staticClass:
-                    "list-group-item d-flex justify-content-between lh-condensed"
-                },
-                [
-                  _vm._m(0),
-                  _vm._v(" "),
-                  _c("span", { staticClass: "text-muted" }, [
-                    _vm._v(_vm._s(_vm.product.trait))
-                  ])
-                ]
-              ),
+              ])
+            ])
+          : _vm._e(),
+        _vm._v(" "),
+        _vm.taskData.tasks
+          ? _c("div", [
+              _vm._m(4),
               _vm._v(" "),
               _c(
-                "li",
-                {
-                  staticClass:
-                    "list-group-item d-flex justify-content-between lh-condensed"
-                },
-                [
-                  _vm._m(1),
-                  _vm._v(" "),
-                  _c("span", { staticClass: "text-muted" }, [
-                    _vm._v("$" + _vm._s(_vm.product.price))
-                  ])
-                ]
-              ),
-              _vm._v(" "),
-              _c(
-                "li",
-                {
-                  staticClass:
-                    "list-group-item d-flex justify-content-between lh-condensed"
-                },
-                [
-                  _vm._m(2),
-                  _vm._v(" "),
-                  _c("span", { staticClass: "text-muted" }, [
-                    _vm._v(_vm._s(_vm.product.desc))
-                  ])
-                ]
-              ),
-              _vm._v(" "),
-              _c(
-                "li",
-                {
-                  staticClass:
-                    "list-group-item d-flex justify-content-between bg-light"
-                },
-                [
-                  _vm._m(3),
-                  _vm._v(" "),
-                  _c("strong", { staticClass: "text-success" }, [
-                    _vm._v("$" + _vm._s(_vm.product.price))
-                  ])
-                ]
+                "ul",
+                { staticClass: "list-group mb-3" },
+                _vm._l(_vm.taskData.tasks, function(task) {
+                  return _c(
+                    "li",
+                    {
+                      staticClass:
+                        "list-group-item d-flex justify-content-between lh-condensed"
+                    },
+                    [
+                      _c("div", [
+                        _c("h6", { staticClass: "my-0" }, [
+                          _vm._v("product name: " + _vm._s(task.issue))
+                        ]),
+                        _vm._v(" "),
+                        _c("small", { staticClass: "text-muted" }, [
+                          _vm._v("date: " + _vm._s(task.created_at))
+                        ])
+                      ]),
+                      _vm._v(" "),
+                      _c("span", { staticClass: "text-muted" }, [
+                        _vm._v("$" + _vm._s(task.price))
+                      ])
+                    ]
+                  )
+                }),
+                0
               )
-            ]),
-            _vm._v(" "),
-            _vm._m(4)
-          ])
-        : _vm._e(),
+            ])
+          : _vm._e()
+      ]),
       _vm._v(" "),
       _c("div", { staticClass: "col-md-8 order-md-1" }, [
         _c("h4", { staticClass: "mb-3" }, [_vm._v("Customer Info")]),
@@ -90131,6 +90202,43 @@ var render = function() {
           },
           [
             _c("div", { staticClass: "row" }, [
+              _c("div", { staticClass: "col-md-6 mb-3" }, [
+                _c("label", { attrs: { for: "phone" } }, [
+                  _vm._v("Contact number111")
+                ]),
+                _vm._v(" "),
+                _c("input", {
+                  directives: [
+                    {
+                      name: "model",
+                      rawName: "v-model",
+                      value: _vm.phone,
+                      expression: "phone"
+                    }
+                  ],
+                  attrs: { type: "text" },
+                  domProps: { value: _vm.phone },
+                  on: {
+                    input: function($event) {
+                      if ($event.target.composing) {
+                        return
+                      }
+                      _vm.phone = $event.target.value
+                    }
+                  }
+                }),
+                _vm._v(
+                  "\n                        " +
+                    _vm._s(_vm.checkPhoneRes) +
+                    "\n                        "
+                ),
+                _c("div", { staticClass: "invalid-feedback" }, [
+                  _vm._v(
+                    "\n                            Valid phone is required.\n                        "
+                  )
+                ])
+              ]),
+              _vm._v(" "),
               _c("div", { staticClass: "col-md-6 mb-3" }, [
                 _c("label", { attrs: { for: "name" } }, [_vm._v("Full name")]),
                 _vm._v(" "),
@@ -90165,46 +90273,6 @@ var render = function() {
                 _c("div", { staticClass: "invalid-feedback" }, [
                   _vm._v(
                     "\n                            Valid full name is required.\n                        "
-                  )
-                ])
-              ]),
-              _vm._v(" "),
-              _c("div", { staticClass: "col-md-6 mb-3" }, [
-                _c("label", { attrs: { for: "phone" } }, [
-                  _vm._v("Contact number")
-                ]),
-                _vm._v(" "),
-                _c("input", {
-                  directives: [
-                    {
-                      name: "model",
-                      rawName: "v-model",
-                      value: _vm.taskData.phone,
-                      expression: "taskData.phone"
-                    }
-                  ],
-                  staticClass: "form-control",
-                  attrs: {
-                    type: "text",
-                    id: "phone",
-                    placeholder: "",
-                    value: "",
-                    required: ""
-                  },
-                  domProps: { value: _vm.taskData.phone },
-                  on: {
-                    input: function($event) {
-                      if ($event.target.composing) {
-                        return
-                      }
-                      _vm.$set(_vm.taskData, "phone", $event.target.value)
-                    }
-                  }
-                }),
-                _vm._v(" "),
-                _c("div", { staticClass: "invalid-feedback" }, [
-                  _vm._v(
-                    "\n                            Valid phone is required.\n                        "
                   )
                 ])
               ])
@@ -90557,22 +90625,11 @@ var staticRenderFns = [
     var _vm = this
     var _h = _vm.$createElement
     var _c = _vm._self._c || _h
-    return _c("form", { staticClass: "card p-2" }, [
-      _c("div", { staticClass: "input-group" }, [
-        _c("input", {
-          staticClass: "form-control",
-          attrs: { type: "text", placeholder: "Promo code" }
-        }),
-        _vm._v(" "),
-        _c("div", { staticClass: "input-group-append" }, [
-          _c(
-            "button",
-            { staticClass: "btn btn-secondary", attrs: { type: "submit" } },
-            [_vm._v("Redeem")]
-          )
-        ])
-      ])
-    ])
+    return _c(
+      "h4",
+      { staticClass: "d-flex justify-content-between align-items-center mb-3" },
+      [_c("span", { staticClass: "text-muted" }, [_vm._v("customer history")])]
+    )
   },
   function() {
     var _vm = this

@@ -1,57 +1,83 @@
 <template>
     <div class="container">
         <div class="row">
-            <div class="col-md-4 order-md-2 mb-4"  v-if="product">
-                <h4 class="d-flex justify-content-between align-items-center mb-3">
-                    <span class="text-muted" >{{product.name}}</span>
-                    <span class="badge badge-secondary badge-pill" > {{this.$route.params.id }}</span>
-                </h4>
-                <ul class="list-group mb-3">
-                    <li class="list-group-item d-flex justify-content-between lh-condensed">
-                        <div>
-                            <h6 class="my-0">Product trait</h6>
-                            <!--<small class="text-muted">white</small>-->
-                        </div>
-                        <span class="text-muted">{{product.trait}}</span>
-                    </li>
-                    <li class="list-group-item d-flex justify-content-between lh-condensed">
-                        <div>
-                            <h6 class="my-0">product price</h6>
-                            <!--<small class="text-muted">Brief description</small>-->
-                        </div>
-                        <span class="text-muted">${{product.price}}</span>
-                    </li>
-                    <li class="list-group-item d-flex justify-content-between lh-condensed">
-                        <div>
-                            <h6 class="my-0">product description</h6>
-                            <!--<small class="text-muted">Brief description</small>-->
-                        </div>
-                        <span class="text-muted">{{product.desc}}</span>
-                    </li>
-                    <li class="list-group-item d-flex justify-content-between bg-light">
-                        <div class="text-success">
-                            <span>Total (USD)</span>
+            <div class="col-md-4 order-md-2 mb-4"   >
+                <div v-if="product">
+                    <h4 class="d-flex justify-content-between align-items-center mb-3">
+                        <span class="text-muted" >{{product.name}}</span>
+                        <span class="badge badge-secondary badge-pill" > {{this.$route.params.id }}</span>
+                    </h4>
+                    <ul class="list-group mb-3">
+                        <li class="list-group-item d-flex justify-content-between lh-condensed">
+                            <div>
+                                <h6 class="my-0">Product trait</h6>
+                                <!--<small class="text-muted">white</small>-->
+                            </div>
+                            <span class="text-muted">{{product.trait}}</span>
+                        </li>
+                        <li class="list-group-item d-flex justify-content-between lh-condensed">
+                            <div>
+                                <h6 class="my-0">product price</h6>
+                                <!--<small class="text-muted">Brief description</small>-->
+                            </div>
+                            <span class="text-muted">${{product.price}}</span>
+                        </li>
+                        <li class="list-group-item d-flex justify-content-between lh-condensed">
+                            <div>
+                                <h6 class="my-0">product description</h6>
+                                <!--<small class="text-muted">Brief description</small>-->
+                            </div>
+                            <span class="text-muted">{{product.desc}}</span>
+                        </li>
+                        <li class="list-group-item d-flex justify-content-between bg-light">
+                            <div class="text-success">
+                                <span>Total (USD)</span>
 
-                        </div>
-                        <strong class="text-success">${{product.price}}</strong>
+                            </div>
+                            <strong class="text-success">${{product.price}}</strong>
 
-                    </li>
+                        </li>
 
-                </ul>
+                    </ul>
+                </div>
 
-                <form class="card p-2">
-                    <div class="input-group">
-                        <input type="text" class="form-control" placeholder="Promo code">
-                        <div class="input-group-append">
-                            <button type="submit" class="btn btn-secondary">Redeem</button>
-                        </div>
-                    </div>
-                </form>
+                <!---->
+                <div v-if="taskData.tasks">
+                    <h4 class="d-flex justify-content-between align-items-center mb-3">
+                        <span class="text-muted" >customer history</span>
+                    </h4>
+                    <ul class="list-group mb-3">
+
+                        <li class="list-group-item d-flex justify-content-between lh-condensed" v-for="task in taskData.tasks">
+                            <div>
+                                <h6 class="my-0">product name: {{task.issue}}</h6>
+                                <small class="text-muted">date: {{task.created_at}}</small>
+                            </div>
+                            <span class="text-muted">${{task.price}}</span>
+                        </li>
+
+                    </ul>
+                </div>
+
+
+
+
+
             </div>
             <div class="col-md-8 order-md-1">
                 <h4 class="mb-3">Customer Info</h4>
                 <form class="needs-validation" novalidate method="post" @submit.prevent="submitData">
                     <div class="row">
+                        <div class="col-md-6 mb-3">
+                            <label for="phone">Contact number111</label>
+                            <!--<input type="text" class="form-control" id="phone" placeholder="" value="" required v-model="taskData.phone">-->
+                            <!--<input type="text" class="form-control" id="phone" placeholder="" value="111" required v-model="phone" @change="checkPhone">-->
+                            <input type="text" v-model="phone" />
+                            {{checkPhoneRes }}
+                            <div class="invalid-feedback">
+                                Valid phone is required.
+                            </div>
+                        </div>
                         <div class="col-md-6 mb-3">
                             <label for="name">Full name</label>
                             <input type="text" class="form-control" id="name" placeholder="" value="" required v-model="taskData.name">
@@ -59,16 +85,7 @@
                                 Valid full name is required.
                             </div>
                         </div>
-                        <div class="col-md-6 mb-3">
-                            <label for="phone">Contact number</label>
-                            <input type="text" class="form-control" id="phone" placeholder="" value="" required v-model="taskData.phone">
-                            <div class="invalid-feedback">
-                                Valid phone is required.
-                            </div>
-                        </div>
                     </div>
-
-
                     <div class="mb-3">
                         <label for="email">Email <span class="text-muted">(Optional)</span></label>
                         <input type="email" class="form-control" id="email" placeholder="you@example.com" v-model="taskData.email">
@@ -76,7 +93,6 @@
                             Please enter a valid email address.
                         </div>
                     </div>
-
                     <div class="mb-3">
                         <label for="address">Address</label>
                         <input type="text" class="form-control" id="address" placeholder="1234 Main St" required v-model="taskData.address">
@@ -84,7 +100,6 @@
                             Please enter your deliver address.
                         </div>
                     </div>
-
                     <div class="mb-3">
                         <label for="issue">Issue</label>
                         <input type="text" class="form-control" id="issue" placeholder="" required v-model="taskData.issue">
@@ -106,11 +121,8 @@
                             Please enter your pin_code.
                         </div>
                     </div>
-
                     <hr class="mb-4">
-
                     <h4 class="mb-3">status</h4>
-
                     <div class="d-block my-3">
                         <div class="custom-control custom-radio">
                             <input id="processing" name="status" type="radio" class="custom-control-input" checked="checked" required value="1" v-model="taskData.status">
@@ -125,7 +137,6 @@
                             <label class="custom-control-label" for="done">done</label>
                         </div>
                     </div>
-
                     <hr class="mb-4">
                     <button class="btn btn-primary btn-lg btn-block" type="submit">submit</button>
                 </form>
@@ -142,10 +153,18 @@
                 productId:0,
                 product:null,
                 total:0,
+                phone:null,
+                checkPhoneRes:[],
                 taskData:{
                     // status:0
                 }
             }
+        },
+        watch:{
+             phone(val){
+                 this.getPhoneResult();
+
+             },
         },
         mounted(){
             this.getProductId();
@@ -154,6 +173,19 @@
             // console.log(this.total);
         },
          methods:{
+            getPhoneResult(){
+                let url = 'api/v1/customer/query?phone='+ this.phone;
+                axios.get(url).then(res=>{
+                    if (res.data.status != 0){
+                        console.log(res.data);
+                        this.taskData =res.data
+                    }else{
+                        console.log(res.data.msg);
+                    }
+                }).catch(err=>{
+                    console.log(err);
+                });
+            },
             submitData(){
                 console.log('submited');
 
@@ -168,8 +200,12 @@
                         // 'Content-Type': 'application/x-www-form-urlencoded'
                     }
                 }).then(res=>{
-                    console.log('success');
-                    console.log(res.data)
+                    // console.log(res.data);
+                    if (res.data.status = 0) {
+                        //todo
+                        //提示 创建成功
+                        // alert( res. data.msg);
+                    }
                 }).catch(err=>{
                     console.log(err);
                 });
@@ -180,11 +216,11 @@
 
             },
             getProductInfo(){
-                console.log(this.$route.params.id);
+                // console.log(this.$route.params.id);
                 // let id = this.$route.params.id;
                 let id = this.productId;
                 this.product = this.$store.state.products.lists[id - 1];
-                console.log(this.product);
+                // console.log(this.product);
             },
              /*
              * todo
