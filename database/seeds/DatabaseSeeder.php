@@ -11,6 +11,7 @@ class DatabaseSeeder extends Seeder
      */
     public function run()
     {
+    	//首次安装 需要执行下面seed
 //         $this->call(ProductSeeder::class);
 //         $this->call(CustomerSeeder::class);
 

@@ -61,9 +61,9 @@ composer install
 4. 生成测试数据
 
 migrate + seed
-
+>先查看seed 文件,以免关联关系导致数据库报错。
 ```
-$ php artisan migrate --seed
+// $ php artisan migrate --seed
 ```
 
 5. 前端框架安装
